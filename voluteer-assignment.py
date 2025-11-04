@@ -77,8 +77,6 @@ for _, row in tasks_df.iterrows():
         vname, vdiv = chosen['Name'], chosen['Div']
         idx = volunteers[volunteers['Name'] == vname].index[0]
         volunteers.at[idx, 'AssignedHours'] += hrs
-    #    volunteers.at[idx, 'Assignments'].iloc[0].append(
-    #        {"Date": date, "Location": loc, "Task": task, "Instance": inst, "Hours": hrs})
         volunteers.at[idx, 'Assignments'].append({"Date": date, "Location": loc, "Task": task, "Instance": inst, "Hours": hrs})
 
         assignments.append({

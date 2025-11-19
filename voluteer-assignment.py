@@ -21,18 +21,19 @@ volunteers['Assignments'] = [[] for _ in range(len(volunteers))]
 # Tournament setup
 start_date = datetime(2025, 11, 27)
 dates = [(start_date + timedelta(days=i)).date() for i in range(4)]
-locations = ["Stanford", "Patelco", "Sycamore", "Davis", "FSP", "Rancho"]
+locations = ["Stanford", "Patelco-E", "Patelco-W","Sycamore2", "Sycamore3", "Davis", "FSP", "Rancho"]
 fd_locations = [ "Patelco", "Sycamore", "Rancho", "FSP"]
 
 # Task and location setup
-ground_manager_count = {"Stanford": 2, "Patelco": 2, "Sycamore": 4, "Davis": 1, "FSP": 1, "Rancho": 2}
+ground_manager_count = {"Stanford": 2, "Patelco-E": 2, "Patelco-W" :2, "Sycamore2": 2, "Sycamore3": 2, "Davis": 1, "FSP": 1, "Rancho": 2}
 food_delivery_count  = {"Patelco" : 2, "Sycamore": 2, "Rancho": 2, "FSP": 1}
-scorer_count = {"Stanford": 1, "Patelco": 2, "Sycamore": 2, "Davis": 1, "FSP": 1, "Rancho": 1}
+scorer_count = {"Stanford": 1, "Patelco-E": 1, "Patelco-W": 1, "Sycamore2": 1, "Sycamore3": 1, "Davis": 1, "FSP": 1, "Rancho": 1}
 division_pref = {
-    "Sycamore": ["U14"],
-#    "Sycamore3": ["U14"],
+    "Sycamore2": ["U14"],
+    "Sycamore3": ["U14"],
     "Stanford": ["U10", "U12"],
-    "Patelco": ["U10", "U12"],
+    "Patelco-E": ["U10", "U12"],
+    "Patelco-W": ["U10", "U12"],
     "Davis": ["U16"],
     "FSP": ["U16"],
     "Rancho": ["U12"],

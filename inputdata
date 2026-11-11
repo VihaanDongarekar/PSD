@@ -1,97 +1,56 @@
-Mgmt,Player Name,Div
-No,Adhrit Naithani,U14
-No,Hrishi Dattani,U14
-Yes,Kiaan Lalit,U14
-No,Krishna Shetty,U14
-Yes,Nyle Chaudhary,U14
-No,Param Sanghvi,U14
-No,Pranit Doshi,U14
-No,Prateek Murthy,U14
-Yes,Prithvi Alluboyina,U14
-No,Rayansh Vaishnav,U14
-Yes,Ricardo Utseya,U14
-Yes,Roshan Movva,U14
-No,Sanyam Verma,U14
-Yes,Shiven Jariwala,U14
-Yes,Shubham Biyani,U14
-No,Siddhanth Shyam,U14
-No,Urjit Bhogineni,U14
-No,Vaibhav Gudlavalleti,U14
-No,Varun Thomas,U14
-Yes,Vedant Ayachit,U14
-No,Vihaan Alva,U14
-Yes,Vihaan Dongarekar,U14
-No,Vivasvan Vashi,U14
-No,Yuvan Thomas,U14
-No,Aditya Iyer,U12
-No,Aneek Rapurohit,U12
-No,Arjun Kondapalli,U12
-No,Avyaan Trivedi,U12
-No,Ilan Sakthikumar,U12
-No,Jay Adhav,U12
-No,Mahin Patel,U12
-No,Pranav Kandra,U12
-No,Samanvi Edupuganti,U12
-No,Shaurya Chavan,U12
-No,Swaminathan Shyam,U12
-No,Vishnav Gundeli,U12
-No,Akhil Nair,U12
-No,Kanav Garg,U12
-No,Naren Potelu,U12
-No,Navneeth Reghuram,U12
-No,Praan Praharaj,U12
-Yes,Reyansh Pachnekar,U12
-No,Rishi Kumar Elagala,U12
-No,Rishik Samaddar,U12
-No,Rohit Rabindranath,U12
-No,Samar Pawar,U12
-No,Viaan Masipeddi,U12
-Yes,Writadhee Majumdar,U12
-Yes,Arnav Anand,U16
-No,U16Player 2,U16
-No,U16Player 3,U16
-No,U16Player 4,U16
-No,U16Player 5,U16
-No,U16Player 6,U16
-No,U16Player 7,U16
-No,U16Player 8,U16
-No,U16Player 9,U16
-No,U16Player 10,U16
-No,U16Player 11,U16
-No,U16Player 12,U16
-No,U16Player 13,U16
-No,U16Player 14,U16
-No,U16Player 15,U16
-No,U16Player 16,U16
-No,U16Player 17,U16
-No,U16Player 18,U16
-No,U16Player 19,U16
-No,U16Player 20,U16
-No,U16Player 21,U16
-No,U16Player 22,U16
-No,U16Player 23,U16
-No,U16Player 24,U16
-Yes,Samith Gundapi,U10
-Yes,Ridhaan Dhabral,U10
-Yes,Sharma,U10
-No,U10 Player 4,U10
-No,U10 Player 5,U10
-No,U10 Player 6,U10
-No,U10 Player 7,U10
-No,U10 Player 8,U10
-No,U10 Player 9,U10
-No,U10 Player 10,U10
-No,U10 Player 11,U10
-No,U10 Player 12,U10
-No,U10 Player 13,U10
-No,U10 Player 14,U10
-No,U10 Player 15,U10
-No,U10 Player 16,U10
-No,U10 Player 17,U10
-No,U10 Player 18,U10
-No,U10 Player 19,U10
-No,U10 Player 20,U10
-No,U10 Player 21,U10
-No,U10 Player 22,U10
-No,U10 Player 23,U10
-No,U10 Player 24,U10
+Mgmt,Player Name,Div,Team,Umpire Pannel
+No,Arjun Anand,U9,Team 1,No
+No,Ayaansh Monga,U9,Team 1,No
+No,Dhanyatha Balamurugan,U9,Team 1,No
+No,Ishan Pandanaboyana,U9,Team 1,No
+No,Mivaan Pancholi,U9,Team 1,No
+No,Myra Dhanda,U9,Team 2,No
+No,Priyansh Somani,U9,Team 2,No
+No,Rohan Shukla,U9,Team 2,No
+No,Siddhanth Karthik Khambampati,U9,Team 2,No
+No,Sifar Sha Shaik,U9,Team 2,No
+No,Smayan Mohapatra,U9,Team 2,No
+No,Agastya Challa,U11,Team 2,No
+No,Akshaj Kapila,U11,Team 1,No
+No,Ashvath Naveen,U11,Team 2,No
+No,Hitesh Deshmukh,U11,Team 2,No
+No,Neil Sirohi,U11,Team 1,No
+No,Praneet Prasad,U11,Team 1,No
+No,Rithvik Bharadwaj,U11,Team 1,No
+No,Riyansh Tripathy,U11,Team 2,No
+No,Sai Vallabh Tipparaju,U11,Team 1,No
+No,Shlok Pachipulsu,U11,Team 1,Yes
+No,Viaan Patel,U11,Team 1,Yes
+No,Vidyuth Manikandan,U11,Team 1,Yes
+No,Vikram Prasanna,U11,Team 2,No
+No,Vishnav Gundeli,U11,Team 2,No
+No,Aditya Deshpande,U13,Team 2,No
+No,Advay Dhanda,U13,Team 2,No
+No,Avyaan Trivedi,U13,Team 2,No
+No,Chaitanya Venkatesan,U13,Team 2,No
+No,Dhanvin Balamurugan,U13,Team 2,No
+No,Hanish Devulapally,U13,Team 2,No
+No,Ilan Sakthikumar,U13,Team 2,No
+No,Jashaunn Gowra,U13,Team 2,No
+No,Mahin Patel,U13,Team 1,No
+No,Praan Praharaj,U13,Team 1,No
+No,Reyaan Sabnani,U13,Team 2,No
+No,Rishik Samaddar,U13,Team 1,No
+No,Rohan Maddi,U13,Team 1,No
+No,Samanvi Edupuganti,U13,Team 1,No
+No,Samar Pawar,U13,Team 1,No
+No,Swaminathan Shyam,U13,Team 2,No
+No,Adhrit Naithani,U15,Team 2,No
+No,Kiaan Lalit,U15,Team 1,No
+No,Neel Sekhar,U15,Team 2,Yes
+No,Param Sanghvi,U15,Team 2,Yes
+No,Pranit Doshi,U15,Team 1,Yes
+No,Prateek Murthy,U15,Team 2,No
+No,Prateek Prasad,U15,Team 2,No
+No,Sanyam Verma,U15,Team 2,No
+No,Satvik Bobbala,U15,Team 2,No
+No,Shlok Thakkar,U15,Team 2,No
+No,Siddhanth Shyam,U15,Team 1,No
+No,Sparsh Doctor,U15,Team 2,No
+No,Vihaan Alva,U15,Team 2,No
+No,Yash Promod,U15,Team 2,No

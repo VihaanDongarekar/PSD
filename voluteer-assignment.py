@@ -42,7 +42,8 @@ fd_locations = ["Patelco", "Sycamore", "FSP", "QR"]
 # Task and location setup
 ground_manager_count = {"Stanford": 2, "Patelco-E": 2, "Patelco-W": 2, "Sycamore2": 2, "Sycamore3": 2, "FSP": 1, "QR": 1}
 food_delivery_count = {"Patelco": 2, "Sycamore": 2, "FSP": 1, "QR": 1 }
-scorer_count = {"Stanford": 2, "Patelco-E": 1, "Patelco-W": 1, "Sycamore2": 1, "Sycamore3": 1, "FSP": 1, "QR": 1}
+# Stanford (U9) has only one team -> one scorer per day
+scorer_count = {"Stanford": 1, "Patelco-E": 1, "Patelco-W": 1, "Sycamore2": 1, "Sycamore3": 1, "FSP": 1, "QR": 1}
 division_pref = {
     "Stanford": ["U9"],
     "Patelco-E": ["U11"],
@@ -52,6 +53,20 @@ division_pref = {
     "FSP": ["U15"],
     "Tarika": ["U15"],
     "QR": ["U15"],
+}
+
+# Zone preference for Ground Manager and Food Delivery
+# (Scoring keeps the exact division mapping above)
+zone_pref = {
+    "Stanford":  ["U9", "U11"],
+    "Patelco-E": ["U9", "U11"],
+    "Patelco-W": ["U9", "U11"],
+    "Patelco":   ["U9", "U11"],
+    "Sycamore2": ["U13"],
+    "Sycamore3": ["U13"],
+    "Sycamore":  ["U13"],
+    "FSP":       ["U15"],
+    "QR":        ["U15"],
 }
 
 print("=== # Task and location setup done===")
@@ -100,19 +115,29 @@ for date in dates:
 
 
 # Assign a required team to each Scoring slot so that, every day, each division
-# gets one scorer from Team1 and one from Team2 (alternating across its slots).
-# e.g. Stanford slot1 -> Team1, slot2 -> Team2; Patelco-E -> Team1, Patelco-W -> Team2
+# gets one scorer from each of its teams (cycling through the teams that division has).
+# e.g. Patelco-E -> Team1, Patelco-W -> Team2; Stanford (U9, Team1 only) -> Team1
+div_teams = {
+    div: [t for t in TEAMS if t in set(grp['Team'])]
+    for div, grp in volunteers.groupby('Div')
+}
+print(f"=== Teams per division: {div_teams} ===")
 scoring_slot_counter = {}
 for t in task_instances:
     t["RequiredTeam"] = None
     if t["Task"] == "Scoring":
         div = division_pref.get(t["Location"], ["ALL"])[0]
+        teams = div_teams.get(div) or TEAMS
         key = (t["Date"], div)
         n = scoring_slot_counter.get(key, 0)
-        t["RequiredTeam"] = TEAMS[n % len(TEAMS)]
+        t["RequiredTeam"] = teams[n % len(teams)]
         scoring_slot_counter[key] = n + 1
 
-tasks_df = pd.DataFrame(task_instances).sort_values(by='Hours', ascending=False, kind='stable').reset_index(drop=True)
+# Allocate Scoring first (most constrained: specific division + team), then the rest by hours
+tasks_df = pd.DataFrame(task_instances)
+tasks_df['IsScoring'] = tasks_df['Task'] == 'Scoring'
+tasks_df = (tasks_df.sort_values(by=['IsScoring', 'Hours'], ascending=[False, False], kind='stable')
+            .drop(columns='IsScoring').reset_index(drop=True))
 
 print("=== # Generated all task instances===")
 # Helper to check availability
@@ -132,7 +157,7 @@ for _, row in tasks_df.iterrows():
     candidates = volunteers.copy()
     candidates = candidates[candidates['Name'].apply(lambda n: is_available(n, date))]
 
-    prefs = division_pref.get(loc, [])
+    prefs = division_pref.get(loc, []) if task == "Scoring" else zone_pref.get(loc, [])
     in_div = candidates['Div'].isin(prefs) if prefs else pd.Series(False, index=candidates.index)
 
     # Candidate pools in priority order
@@ -145,7 +170,7 @@ for _, row in tasks_df.iterrows():
             (candidates, f"No {req_team} volunteer available - used other team"),
         ]
     else:
-        pools = [(candidates[in_div], ""), (candidates, "")]
+        pools = [(candidates[in_div], ""), (candidates, "Assigned outside preferred division")]
 
     chosen, note = None, ""
     for pool, pool_note in pools:
@@ -175,10 +200,51 @@ for _, row in tasks_df.iterrows():
         })
 
 print("=== # Allocating volunteers done===")
+
+# === Second pass: Misc-StandBy ===
+# After the main assignments, give volunteers with fewer than STANDBY_MAX_HOURS hours
+# a Misc-StandBy task: one per food-delivery location per day (4 per day).
+STANDBY_HOURS = 3
+STANDBY_MAX_HOURS = 8   # only volunteers with fewer than this many hours are eligible
+print(f"=== # Allocating Misc-StandBy to volunteers with < {STANDBY_MAX_HOURS} hrs ===")
+for date in dates:
+    for loc in fd_locations:
+        candidates = volunteers[volunteers['Name'].apply(lambda n: is_available(n, date))]
+        eligible = candidates[candidates['AssignedHours'] < STANDBY_MAX_HOURS]
+        in_zone = eligible['Div'].isin(zone_pref.get(loc, []))
+        pools = [
+            (eligible[in_zone], ""),
+            (eligible, "Assigned outside preferred division"),
+        ]  # if nobody under the limit is free, the slot stays UNASSIGNED
+        chosen, note = None, ""
+        for pool, pool_note in pools:
+            if not pool.empty:
+                chosen, note = pool.sort_values('AssignedHours', kind='stable').iloc[0], pool_note
+                break
+
+        if chosen is not None:
+            idx = volunteers[volunteers['Name'] == chosen['Name']].index[0]
+            volunteers.at[idx, 'AssignedHours'] += STANDBY_HOURS
+            volunteers.at[idx, 'Assignments'].append({"Date": date, "Location": loc, "Task": "Misc-StandBy",
+                                                      "Instance": "Day", "Hours": STANDBY_HOURS})
+            assignments.append({
+                "Date": date, "Location": loc, "Task": "Misc-StandBy", "Instance": "Day", "Hours": STANDBY_HOURS,
+                "RequiredTeam": None, "VolunteerName": chosen['Name'], "VolunteerDiv": chosen['Div'],
+                "VolunteerTeam": chosen['Team'], "Note": note
+            })
+        else:
+            assignments.append({
+                "Date": date, "Location": loc, "Task": "Misc-StandBy", "Instance": "Day", "Hours": STANDBY_HOURS,
+                "RequiredTeam": None, "VolunteerName": None, "VolunteerDiv": None,
+                "VolunteerTeam": None, "Note": f"UNASSIGNED - no volunteer under {STANDBY_MAX_HOURS} hrs available"
+            })
+print("=== # Misc-StandBy allocation done ===")
 # Save to Excel
 assignments_df = pd.DataFrame(assignments)
 with pd.ExcelWriter("output/2026_Volunteer_Schedule_Generated.xlsx") as writer:
-    assignments_df.to_excel(writer, index=False, sheet_name="Volunteer Schedule")
+    # Team and Hours columns are used internally but not shown on the schedule sheet
+    assignments_df.drop(columns=['Hours', 'RequiredTeam', 'VolunteerTeam']).to_excel(
+        writer, index=False, sheet_name="Volunteer Schedule")
     volunteers[['Name', 'Div', 'Team', 'Mgmt', 'AssignedHours']].sort_values(by='AssignedHours', ascending=False).to_excel(
         writer, index=False, sheet_name="Volunteer Summary"
     )
